@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <br />
+    <div>浏览器录音听写：<button id="btn_control">开始录音</button></div>
+    <br />
+    <div>
+      音频文件听写(16kHz, s16le, pcm)： <input type="file" id="input_file" />
+    </div>
+    <div id="result"></div>
+    <script>
+      var APPID = "your_appid"; // 请填入讯飞开放平台应用 APPID（已脱敏）
+      var API_SECRET = "your_api_secret"; // 请填入讯飞 API Secret（已脱敏）
+      var API_KEY = "your_api_key"; // 请填入讯飞 API Key（已脱敏）
+    </script>
+    <script src="../crypto-js.js"></script>
+    <script src=".../dist/index.umd.js"></script>
+    <script src="./index.js"></script>
+    <script src="./input-file.js"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: dev # 默认使用开发环境配置
+  application:
+    name: suno-integration-app
+
+suno:
+  api:
+    base-url: https://api.sunoapi.org
+    timeout: 30000

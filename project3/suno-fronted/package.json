@@ -1,0 +1,31 @@
+{
+  "name": "suno-fronted",
+  "version": "1.0.0",
+  "description": "Vue frontend for Suno music generation",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "dev": "vue-cli-service serve"
+  },
+  "dependencies": {
+    "animejs": "^3.2.2",
+    "axios": "^1.12.2",
+    "vue": "^3.5.22"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-eslint": "^5.0.9",
+    "@vue/cli-service": "^5.0.9",
+    "@vue/eslint-config-standard": "^8.0.1",
+    "eslint": "^8.45.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-vue": "^9.15.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

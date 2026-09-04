@@ -1,0 +1,37 @@
+# ===== 依赖与构建产物 =====
+node_modules/
+target/
+dist/
+*.log
+hs_err_pid*.log
+replay_pid*.log
+*.class
+*.jar
+
+# ===== 运行产物 / 本地数据 =====
+uploads/
+*.mp3
+*.wav
+
+# ===== 大体积媒体资源（不在仓库内，需要完整资源包请邮件联系作者）=====
+*.glb
+*.mp4
+
+# ===== 编辑器 / 系统文件 =====
+.vscode/
+.code/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# ===== 根目录原稿（已归档至 docs/）=====
+/*.docx
+
+# demo 内废弃脚手架与残留
+demo/src/vite-project/
+demo/type
+
+# project2 根目录原型测试页（非模块代码）
+/project2/test.html
+/project2/test2.html

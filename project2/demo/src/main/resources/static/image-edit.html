@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>补天遗韵</title>
+    <style>
+        :root {
+            /* -primary-color应用红色高级渐变色 */
+            --primary-color: #ff0000a2;
+            --accent-color: #000000bd;
+            --muted-color: #ff0000;
+            --bg-color: #f3f6fb;
+            --card-color: #ffffff;
+            --text-color: #ff0000;
+            --border-color: rgba(255, 16, 16, 0.08);
+            --error-color: #454545;
+            --success-color: #ff0000;
+            --glass: rgba(255, 255, 255, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(180deg, var(--bg-color) 0%, #eef3fb 100%);
+            color: var(--text-color);
+            line-height: 1.55;
+            padding: 18px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 120px auto 0 auto;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+            border: 1px solid var(--border-color);
+            position: relative;
+            z-index: 5;
+            background: rgba(255, 255, 255, 0.500);
+            -webkit-backdrop-filter: blur(1px);
+            backdrop-filter: blur(2px);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 18px;
+            color: var(--primary-color);
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            font-size: 22px;
+        }
+
+        .upload-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .upload-box {
+            width: 100%;
+            max-width: 540px;
+            height: 260px;
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.22s ease;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0);
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(5px);
+            padding: 12px;
+        }
+
+        .upload-box:hover {
+            border-color: var(--primary-color);
+        }
+
+        .upload-box.active {
+            border-color: var(--primary-color);
+            background-color: rgba(74, 107, 223, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 44px;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            text-align: center;
+            margin-bottom: 6px;
+            color: var(--muted-color);
+            font-size: 14px;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: transparent;
+            padding: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+            width: 100%;
+            max-width: 540px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        textarea {
+            background: rgba(255, 255, 255, 0);
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(5px);
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: border 0.18s, box-shadow 0.18s;
+            background: linear-gradient(180deg, rgba(250, 250, 255, 0.8), rgba(250, 250, 255, 0.6));
+            color: var(--text-color);
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 107, 223, 0.2);
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: transform 0.12s ease, box-shadow 0.12s ease;
+            display: inline-block;
+            margin: 0 auto;
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(216, 47, 47, 0.12);
+        }
+
+        .btn:hover {
+            background-color: #ff5e5e;
+        }
+
+        .btn:disabled {
+            background-color: #a0a0a0;
+            cursor: not-allowed;
+        }
+
+        .result-area {
+            margin-top: 18px;
+            display: none;
+        }
+
+        .result-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .result-container {
+            background: rgba(255, 255, 255, 0);
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            /*圆角*/
+            border-radius: 12px;
+        }
+
+        .image-container {
+            background: rgba(255, 255, 255, 0);
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(5px);
+            flex: 1 1 320px;
+            min-width: 260px;
+            max-width: 480px;
+            border-radius: 12px;
+        }
+
+        .image-container h3 {
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 15px;
+            color: var(--muted-color);
+            font-weight: 600;
+        }
+
+        .result-image {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            border: 1px solid var(--border-color);
+            background: #fff;
+        }
+
+        /* 背景视频样式 - 修复部分 */
+        #bgVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 0;
+            object-fit: cover;
+            filter: blur(2px) brightness(0.9);
+            pointer-events: none;
+            opacity: 0.95;
+            background-color: #000;
+            /* 黑边背景色 */
+        }
+
+        /* 当视频宽高比与视口不匹配时，居中显示视频 */
+        @media (min-aspect-ratio: 16/9) {
+            #bgVideo {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @media (max-aspect-ratio: 16/9) {
+            #bgVideo {
+                width: auto;
+                height: 100%;
+            }
+        }
+
+        /* 将页面主要内容置于视频之上并半透明化以便能看到视频 */
+        body>.container,
+        .container {
+            position: relative;
+            z-index: 5;
+            background-clip: padding-box;
+        }
+
+        /* 全局降低部分组件不透明度以露出视频，但保持可读性 */
+        .upload-box,
+        .thinking-container,
+        .image-container,
+        input[type="text"],
+        textarea,
+        .result-container {
+            background-color: rgba(255, 255, 255, 0.86);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 12px 0 6px 0;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-message {
+            color: var(--error-color);
+            text-align: center;
+            margin-top: 8px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .success-message {
+            color: var(--success-color);
+            text-align: center;
+            margin-top: 8px;
+            display: none;
+            font-weight: 600;
+        }
+
+        /* AI 思考 区域样式 */
+        .thinking-area {
+            width: 100%;
+            max-width: 920px;
+            margin: 8px auto 18px auto;
+        }
+
+        .thinking-container {
+            background: linear-gradient(180deg, rgba(47, 91, 216, 0.03), rgba(127, 140, 255, 0.02));
+            border-radius: 12px;
+            padding: 14px 16px;
+            border: 1px solid rgba(47, 91, 216, 0.08);
+            box-shadow: 0 8px 24px rgba(47, 91, 216, 0.04);
+            color: var(--muted-color);
+            font-size: 14px;
+            line-height: 1.6;
+            min-height: 68px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .thinking-container p {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1><font size="10">补天遗韵</font></h1>
+        <!--添加居中副标题-->
+        <div style="text-align:center; margin-bottom:20px;"><font size="5">AI文物修复系统</font></div>
+        <div class="upload-area">
+            <div class="upload-box" id="uploadBox">
+                <div class="upload-icon">📂</div>
+                <p class="upload-text">点击或拖拽图片到此处</p>
+                <p class="upload-text">支持 JPG, PNG 格式</p>
+                <img id="previewImage" class="preview-image" alt="预览图片">
+            </div>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+
+            <div class="form-group">
+                <label for="requirement">修补描述</label>
+                <textarea id="requirement" placeholder="请输入您对文物图像的修复需求..."></textarea>
+            </div>
+
+            <div class="form-group" style="display:none;">
+                <label for="prompt">修复提示 (Prompt)</label>
+                <textarea id="prompt" placeholder="请输入您希望AI如何修复文物图像的描述..."></textarea>
+            </div>
+            <!-- 这里的 style="display:none;" 删除后便显示实际的负面提示词 -->
+            <div class="form-group" style="display:none;">
+                <label for="negativePrompt">负向提示 (Negative Prompt)</label>
+                <textarea id="negativePrompt" placeholder="请输入您不希望出现在文物图像中的内容..."></textarea>
+            </div>
+
+            <button id="submitBtn" class="btn">补天</button>
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>AI正在处理文物图像，请稍候...</p>
+            </div>
+        </div>
+
+        <div class="thinking-area" id="thinkingArea" style="margin-bottom: 30px; display: none;">
+            <h2 class="result-title">修复策略</h2>
+            <div class="thinking-container">
+                <p id="thinkingText"></p>
+            </div>
+            <div style="display:flex; justify-content:center; margin-top:14px; gap:10px;">
+                <button id="editBtn" class="btn" style="min-width:140px;">遗韵</button>
+            </div>
+        </div>
+
+        <div class="result-area" id="resultArea">
+            <h2 class="result-title">修复结果</h2>
+            <div class="result-container">
+                <div class="image-container">
+                    <h3>原始文物图像</h3>
+                    <img id="originalImage" class="result-image" alt="原始图像">
+                </div>
+                <div class="image-container">
+                    <h3>修复后文物图像</h3>
+                    <img id="editedImage" class="result-image" alt="复原图像">
+                    <div style="display:flex; justify-content:center; gap:10px; margin-top:10px;">
+                        <a id="downloadBtn" class="btn"
+                            style="background:transparent; color:var(--primary-color); box-shadow:none; border:1px solid var(--border-color); padding:8px 14px; display:none; text-decoration:none; align-items:center; justify-content:center;"
+                            download>下载修复后的文物图像</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部背景视频 -->
+    <video id="bgVideo" autoplay muted loop playsinline style="display:none;">
+        <source src="background.mp4" type="video/mp4">
+        您的浏览器不支持 video 标签。
+    </video>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const uploadBox = document.getElementById('uploadBox');
+            const fileInput = document.getElementById('fileInput');
+            const previewImage = document.getElementById('previewImage');
+            const submitBtn = document.getElementById('submitBtn');
+            const requirementInput = document.getElementById('requirement');
+            const promptInput = document.getElementById('prompt');
+            const negativePromptInput = document.getElementById('negativePrompt');
+            const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            const thinkingArea = document.getElementById('thinkingArea');
+            const thinkingText = document.getElementById('thinkingText');
+            const editBtn = document.getElementById('editBtn');
+            const resultArea = document.getElementById('resultArea');
+            const originalImage = document.getElementById('originalImage');
+            const editedImage = document.getElementById('editedImage');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const bgVideo = document.getElementById('bgVideo');
+
+            let selectedFile = null;
+
+            // 处理点击上传区域
+            uploadBox.addEventListener('click', function () {
+                fileInput.click();
+            });
+
+            // 处理拖拽
+            uploadBox.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                uploadBox.classList.add('active');
+            });
+
+            uploadBox.addEventListener('dragleave', function () {
+                uploadBox.classList.remove('active');
+            });
+
+            uploadBox.addEventListener('drop', function (e) {
+                e.preventDefault();
+                uploadBox.classList.remove('active');
+
+                if (e.dataTransfer.files.length) {
+                    handleFileSelect(e.dataTransfer.files[0]);
+                }
+            });
+
+            // 处理文件选择
+            fileInput.addEventListener('change', function () {
+                if (fileInput.files.length) {
+                    handleFileSelect(fileInput.files[0]);
+                }
+            });
+
+            function handleFileSelect(file) {
+                // 检查文件类型
+                if (!file.type.match('image.*')) {
+                    showError('请选择图片文件 (JPG, PNG)');
+                    return;
+                }
+
+                // 检查文件大小 (限制5MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    showError('图片大小不能超过10MB');
+                    return;
+                }
+
+                selectedFile = file;
+
+                // 显示预览
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    uploadBox.querySelector('.upload-icon').style.display = 'none';
+                    uploadBox.querySelectorAll('.upload-text').forEach(el => el.style.display = 'none');
+
+                    // 在结果区域显示原始图片
+                    originalImage.src = e.target.result;
+                    hideError();
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // 处理提交
+            submitBtn.addEventListener('click', async function () {
+                if (!selectedFile) {
+                    showError('请选择要编辑的图片');
+                    return;
+                }
+
+                if (!requirementInput.value.trim()) {
+                    showError('请输入编辑需求');
+                    return;
+                }
+
+                // 显示加载状态
+                loading.style.display = 'block';
+                submitBtn.disabled = true;
+                hideError();
+                hideSuccess();
+
+                try {
+                    const formData = new FormData();
+                    formData.append('image', selectedFile);
+                    formData.append('text', requirementInput.value.trim());
+
+                    // 调用QwenVLplus API
+                    const vlResponse = await fetch('/api/vl/process', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!vlResponse.ok) {
+                        const error = await vlResponse.json();
+                        throw new Error(error.message || '分析图片时出错');
+                    }
+
+                    const vlResult = await vlResponse.text();
+
+                    // 解析结果
+                    const parts = parseVLOutput(vlResult);
+                    thinkingText.textContent = parts.thinkingPart;
+                    promptInput.value = parts.positivePromptPart;
+                    negativePromptInput.value = parts.negativePromptPart;
+
+                    // 显示思考结果
+                    thinkingArea.style.display = 'block';
+                    resultArea.style.display = 'none';
+                    showSuccess('分析完成！');
+                } catch (error) {
+                    showError(error.message || '处理图片时发生错误');
+                } finally {
+                    loading.style.display = 'none';
+                    submitBtn.disabled = false;
+                }
+            });
+
+            // 处理编辑按钮
+            editBtn.addEventListener('click', async function () {
+                // 显示加载状态
+                loading.style.display = 'block';
+                editBtn.disabled = true;
+                hideError();
+                hideSuccess();
+
+                try {
+                    const formData = new FormData();
+                    formData.append('image', selectedFile);
+                    formData.append('prompt', promptInput.value.trim());
+                    if (negativePromptInput.value.trim()) {
+                        formData.append('negative_prompt', negativePromptInput.value.trim());
+                    }
+
+                    // 调用QwenImageEdit API
+                    const response = await fetch('/api/image/edit', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.message || '编辑图片时出错');
+                    }
+
+                    const result = await response.json();
+
+                    // 显示结果
+                    if (result.output && result.output.choices && result.output.choices[0] && result.output.choices[0].message && result.output.choices[0].message.content) {
+                        const content = result.output.choices[0].message.content;
+                        const imageData = content.find(item => item.image);
+
+                        if (imageData && imageData.image) {
+                            editedImage.src = imageData.image;
+                            resultArea.style.display = 'block';
+                            // 设置下载按钮
+                            try {
+                                downloadBtn.href = imageData.image;
+                                // 如果是 base64 data URL，确保 download 属性生效
+                                downloadBtn.setAttribute('download', 'edited-image.png');
+                                downloadBtn.style.display = 'inline-flex';
+                            } catch (e) {
+                                downloadBtn.style.display = 'none';
+                            }
+                            showSuccess('图片编辑成功！');
+                        } else {
+                            throw new Error('未获取到编辑后的图片');
+                        }
+                    } else {
+                        throw new Error('无效的响应格式');
+                    }
+                } catch (error) {
+                    showError(error.message || '编辑图片时发生错误');
+                    if (downloadBtn) downloadBtn.style.display = 'none';
+                } finally {
+                    loading.style.display = 'none';
+                    editBtn.disabled = false;
+                }
+            });
+
+            // 解析QwenVLplus输出
+            function parseVLOutput(output) {
+                const parts = {
+                    thinkingPart: '',
+                    positivePromptPart: '',
+                    negativePromptPart: ''
+                };
+
+                // 使用正则表达式提取三个部分
+                const thinkingMatch = output.match(/思考：(.*?)(提示词：|负面提示词：|$)/s);
+                const promptMatch = output.match(/提示词：(.*?)(负面提示词：|$)/s);
+                const negativeMatch = output.match(/负面提示词：(.*)/s);
+
+                if (thinkingMatch && thinkingMatch[1]) {
+                    parts.thinkingPart = thinkingMatch[1].trim();
+                }
+
+                if (promptMatch && promptMatch[1]) {
+                    parts.positivePromptPart = promptMatch[1].trim();
+                }
+
+                if (negativeMatch && negativeMatch[1]) {
+                    parts.negativePromptPart = negativeMatch[1].trim();
+                }
+
+                return parts;
+            }
+
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+            }
+
+            function hideError() {
+                errorMessage.style.display = 'none';
+            }
+
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+            }
+
+            function hideSuccess() {
+                successMessage.style.display = 'none';
+            }
+
+            // 处理背景视频显示（加载成功后显示，失败时隐藏）
+            if (bgVideo) {
+                bgVideo.addEventListener('canplay', function () {
+                    bgVideo.style.display = 'block';
+                    // 设置视频播放速度为3倍速
+                    bgVideo.playbackRate = 2.5;
+                    // 确保循环播放
+                    bgVideo.play().catch(() => { });
+                });
+
+                bgVideo.addEventListener('error', function () {
+                    bgVideo.style.display = 'none';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
